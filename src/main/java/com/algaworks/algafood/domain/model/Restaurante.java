@@ -16,7 +16,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -36,17 +40,20 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
+	@NotEmpty
+	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
-
+	
+	@PositiveOrZero
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-//	@JsonIgnoreProperties("hibernateLazyInitializer")
-//	@JsonIgnore
-	@ManyToOne //(fetch = FetchType.LAZY)
+	//validar propriedades de cozinha
+	@Valid
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 
