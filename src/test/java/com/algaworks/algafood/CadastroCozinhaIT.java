@@ -2,10 +2,6 @@ package com.algaworks.algafood;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +12,11 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ResourceUtils;
-import org.springframework.util.StreamUtils;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.util.DatabaseCleaner;
+import com.algaworks.algafood.util.ResourceUtils;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -42,7 +37,7 @@ public class CadastroCozinhaIT {
 	
 	int cozinhasInseridas;
 	private Cozinha cozinhaAmericana;
-	private String jsonCozinhaChinesa = getContentFromResource("/json/correto/cozinha-chinesa.json");
+	private String jsonCozinhaChinesa = ResourceUtils.lerFileEConverterToString("/json/correto/cozinha-chinesa.json");
 	
 	private static final int COZINHA_ID_INEXISTENTE = 100;
 
@@ -123,14 +118,5 @@ public class CadastroCozinhaIT {
 		cozinhaRepository.save(cozinhaAmericana);
 		
 		cozinhasInseridas = (int) cozinhaRepository.count();
-	}
-	
-	public static String getContentFromResource(String resourceName) {
-		try {
-			InputStream stream = ResourceUtils.class.getResourceAsStream(resourceName);
-			return StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
