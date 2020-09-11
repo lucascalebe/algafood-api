@@ -29,6 +29,22 @@ public class CadastroRestauranteService {
 		return restauranteRepository.save(restaurante);
 	}
 
+	@Transactional
+	public void ativar(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+		
+		restauranteAtual.ativar();
+		//como estou dentro do transactional não preciso dar save
+		//o jpa sincroniza automaticamente
+	}
+	
+	@Transactional
+	public void inativar(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+		
+		restauranteAtual.inativar();
+	}
+	
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 		return restauranteRepository.findById(restauranteId).orElseThrow(() -> 
 			new RestauranteNaoEncontradoException(restauranteId));
