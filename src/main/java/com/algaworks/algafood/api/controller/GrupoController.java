@@ -40,6 +40,8 @@ public class GrupoController {
 	@Autowired
 	private GrupoInputDisassebmler grupoInputDisassebmler;
 	
+
+
 	@GetMapping
 	public List<GrupoModel> listar() {
 		return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
