@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +8,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Pedido {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	@Column(nullable = false)
 	private BigDecimal subtotal;
@@ -42,20 +43,21 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	@CreationTimestamp
-	private LocalDateTime dataCriacao;
+	private OffsetDateTime dataCriacao;
 	
 	private OffsetDateTime dataConfirmacao;
 	private OffsetDateTime dataCancelamento;
 	private OffsetDateTime dataEntrega;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = false,name = "usuario_cliente_id")
 	private Usuario cliente;
 	
 	@Embedded
 	private Endereco enderecoEntrega;
 	
-	private StatusPedido status;
+	@Enumerated(EnumType.STRING)
+	private StatusPedido status = StatusPedido.CRIADO;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -68,4 +70,19 @@ public class Pedido {
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens = new ArrayList<>();
 	
+	public void calcularValorTotal() {
+		this.subtotal = getItens().stream()
+				.map(item -> item.getPrecoTotal())
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		this.valorTotal = this.subtotal.add(this.taxaFrete);
+	}
+	
+	public void definirFrete(Restaurante restaurante) {
+		setTaxaFrete(restaurante.getTaxaFrete());
+	}
+	
+	public void atribuirPedidoAosItens() {
+		getItens().forEach(item -> item.setPedido(this));
+	}
 }
