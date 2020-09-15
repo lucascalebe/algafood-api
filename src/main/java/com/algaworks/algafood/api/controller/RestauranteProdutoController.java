@@ -59,7 +59,7 @@ public class RestauranteProdutoController {
 			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);		
 		}
 		
-		return produtoModelAssembler.toCollectionModel(todosProdutos);
+		return produtoModelAssembler.toCollectionModel(todosProdutos); 
 	}
 	
 	@GetMapping("/{produtoId}")
