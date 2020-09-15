@@ -88,7 +88,7 @@ public class Pedido {
 		
 		this.valorTotal = this.subtotal.add(this.taxaFrete);
 	}	
-	
+
 	public void confirmar() {
 		setStatus(StatusPedido.CONFIRMADO);
 		setDataConfirmacao(OffsetDateTime.now());
