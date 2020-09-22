@@ -1,6 +1,5 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -19,16 +18,17 @@ public class LocalFotoStorageService implements FotoStorageService {
 	@Override
 	public void armazenar(NovaFoto novaFoto) {
 		try {
-			Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
+			Path arquivoPath = getArquivoPath(novaFoto.getNomeAquivo());
 			
-			FileCopyUtils.copy(novaFoto.getInputStream(),
+			FileCopyUtils.copy(novaFoto.getInputStream(), 
 					Files.newOutputStream(arquivoPath));
-		} catch (IOException e) {
-			throw new StorageException("Não foi possível armazenar arquivo",e);
+		} catch (Exception e) {
+			throw new StorageException("Não foi possível armazenar arquivo.", e);
 		}
 	}
 	
 	private Path getArquivoPath(String nomeArquivo) {
 		return diretorioFotos.resolve(Path.of(nomeArquivo));
 	}
+
 }

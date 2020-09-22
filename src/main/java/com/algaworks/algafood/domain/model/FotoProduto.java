@@ -17,29 +17,24 @@ public class FotoProduto {
 
 	@EqualsAndHashCode.Include
 	@Id
-	@Column(name = "produto_id", nullable = false)
+	@Column(name = "produto_id")
 	private Long id;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
-	//mapeada através do id da entidade fotoProduto
 	@MapsId
 	private Produto produto;
-	
-	@Column(nullable = false)
+
 	private String nomeArquivo;
-	
 	private String descricao;
-	
-	@Column(nullable = false)
-	private String ContentType;
-	
-	@Column(nullable = false)
+	private String contentType;
 	private Long tamanho;
-	
+
 	public Long getRestauranteId() {
-		if (getProduto() != null) {			
+		if (getProduto() != null) {
 			return getProduto().getRestaurante().getId();
 		}
+
 		return null;
 	}
+
 }
