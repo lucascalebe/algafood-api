@@ -49,7 +49,7 @@ public class CatalogoFotoProdutoService {
 		
 		return foto;
 	}
-	
+
 	@Transactional
 	public void remover(Long restauranteId, Long produtoId) {
 		FotoProduto foto = buscarOuFalhar(restauranteId, produtoId);
