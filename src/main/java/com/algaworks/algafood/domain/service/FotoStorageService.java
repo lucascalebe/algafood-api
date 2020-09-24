@@ -32,7 +32,7 @@ public interface FotoStorageService {
 		
 		private String nomeAquivo;
 		private InputStream inputStream;
-		
+		private String contentType;
 	}
 	
 }
