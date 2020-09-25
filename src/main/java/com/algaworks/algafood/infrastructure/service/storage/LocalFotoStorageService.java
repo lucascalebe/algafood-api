@@ -1,6 +1,5 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -44,11 +43,14 @@ public class LocalFotoStorageService implements FotoStorageService {
 	}
 
 	@Override
-	public InputStream recuperar(String nomeArquivo) {
+	public FotoRecuperada recuperar(String nomeArquivo) {
 		try {
 			Path path = getArquivoPath(nomeArquivo);
 		
-			return Files.newInputStream(path);
+			FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+					.inputStream( Files.newInputStream(path)).build();
+			
+			return fotoRecuperada;
 		} catch (Exception e) {
 			throw new StorageException("Não foi possível recuperar o arquivo", e);
 		}
