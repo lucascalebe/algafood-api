@@ -122,6 +122,5 @@ public class RestauranteProdutoFotoController {
 		if (!compativel) {
 			throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
 		}
-		
 	}
 }
