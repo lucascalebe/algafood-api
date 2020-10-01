@@ -44,7 +44,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 			throw new EmailException("Não foi possível enviar e-mail", e);
 		}
 	}
-
+	
 	private String processarTemplate(Mensagem mensagem) {
 		try {
 			Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
