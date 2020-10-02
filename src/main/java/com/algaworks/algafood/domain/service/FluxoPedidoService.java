@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 
 @Service
 public class FluxoPedidoService {
@@ -12,19 +13,15 @@ public class FluxoPedidoService {
 	@Autowired
 	private EmissaoPedidoService  emissaoPedido;
 	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
 	@Transactional
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);	
 		pedido.confirmar();
 		
-//		var mensagem = Mensagem.builder()
-//				.assunto(pedido.getRestaurante().getNome() + " - Pedido Confirmado")
-//				.corpo("pedido-confirmado.html")
-//				.variavel("pedido", pedido)
-//				.destinatario(pedido.getCliente().getEmail())
-//				.build();
-//	
-//		envioEmail.enviar(mensagem);
+		pedidoRepository.save(pedido);
 	}
 	
 	@Transactional
@@ -38,5 +35,4 @@ public class FluxoPedidoService {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 		pedido.entregar();
 	}
-	
 }
