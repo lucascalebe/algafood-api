@@ -21,6 +21,7 @@ public class FluxoPedidoService {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);	
 		pedido.confirmar();
 		
+		//só dispara o evento confirmar se tiver o save do jpa
 		pedidoRepository.save(pedido);
 	}
 	
@@ -28,6 +29,8 @@ public class FluxoPedidoService {
 	public void cancelar(String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 		pedido.cancelar();	
+		
+		pedidoRepository.save(pedido);
 	}
 	
 	@Transactional
