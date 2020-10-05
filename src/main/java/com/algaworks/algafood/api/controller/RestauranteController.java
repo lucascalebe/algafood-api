@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
@@ -45,7 +47,6 @@ public class RestauranteController {
 	
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
-	
 	
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
