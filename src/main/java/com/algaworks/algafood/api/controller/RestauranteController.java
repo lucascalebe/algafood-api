@@ -36,7 +36,7 @@ public class RestauranteController {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
-
+	
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
 	
