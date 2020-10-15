@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
 	
-	//cor no projeto inteiro
+	//cors no projeto inteiro
 	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

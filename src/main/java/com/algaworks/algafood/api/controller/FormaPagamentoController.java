@@ -45,11 +45,14 @@ public class FormaPagamentoController {
 	
 	@GetMapping
 	public ResponseEntity<List<FormaPagamentoModel>> listar() {
+		
+		
+		
 		List<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler.
 				toCollectionModel(formaPagamentoRepository.findAll());
 		
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				.body(formasPagamentosModel);
 	}
 	
