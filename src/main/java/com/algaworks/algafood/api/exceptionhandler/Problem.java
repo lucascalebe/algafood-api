@@ -39,7 +39,7 @@ public class Problem {
 	private List<Object> objects;
 	
 	
-	@ApiModel("ObjetoProblema")
+	@ApiModel("ObjetoProblema") 
 	@Getter
 	@Builder
 	public static class Object {

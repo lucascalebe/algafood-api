@@ -18,6 +18,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.ResponseMessage;
@@ -38,30 +39,32 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		var typeResolver = new TypeResolver();
 		
 		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
+				.select()  
 					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
 					.paths(PathSelectors.any())
 					.build()
 				.useDefaultResponseMessages(false)	
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessage())
-				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessage())
+				.globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessage())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessage())
-				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessage())
+				.globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessage())
 				.additionalModels(typeResolver.resolve(Problem.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"));
 	}
 	
-	private List<ResponseMessage> globalPutResponseMessage() {
+	private List<ResponseMessage> globalPostPutResponseMessage() {
 		return Arrays.asList(
 				new ResponseMessageBuilder()
 					.code(400)
 					.message("Requisição inválida (erro do cliente)")
+					.responseModel(new ModelRef("Problema"))
 					.build(),
 					
 					new ResponseMessageBuilder()
 					.code(500)
 					.message("Erro interno do servidor")
+					.responseModel(new ModelRef("Problema"))
 					.build(),
 					
 					new ResponseMessageBuilder()
@@ -72,6 +75,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				new ResponseMessageBuilder()
 					.code(415)
 					.message("Requisição recusada porque o corpo está em um formato não suportado")
+					.responseModel(new ModelRef("Problema"))
 					.build()
 				);
 	}
@@ -81,35 +85,13 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				new ResponseMessageBuilder()
 					.code(400)
 					.message("Requisição inválida (erro do cliente)")
+					.responseModel(new ModelRef("Problema"))
 					.build(),
 					
 				new ResponseMessageBuilder()
 					.code(500)
 					.message("Erro interno do servidor")
-					.build()
-				);
-	}
-
-	private List<ResponseMessage> globalPostResponseMessage() {
-		return Arrays.asList(
-				new ResponseMessageBuilder()
-					.code(400)
-					.message("Requisição inválida (erro do cliente)")
-					.build(),
-					
-				new ResponseMessageBuilder()
-					.code(500)
-					.message("Erro interno do servidor")
-					.build(),
-					
-				new ResponseMessageBuilder()
-					.code(406)
-					.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
-					.build(),
-					
-				new ResponseMessageBuilder()
-					.code(415)
-					.message("Requisição recusada porque o corpo está em um formato não suportado")
+					.responseModel(new ModelRef("Problema"))
 					.build()
 				);
 	}
@@ -119,6 +101,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				new ResponseMessageBuilder()
 					.code(500)
 					.message("Erro interno do servidor")
+					.responseModel(new ModelRef("Problema"))
 					.build(),
 					
 				new ResponseMessageBuilder()
