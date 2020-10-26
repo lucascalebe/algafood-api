@@ -39,10 +39,75 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 					.build()
 				.useDefaultResponseMessages(false)	
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessage())
+				.globalResponseMessage(RequestMethod.POST, globalPostResponseMessage())
+				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessage())
+				.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessage())				
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"));
 	}
 	
+	private List<ResponseMessage> globalPutResponseMessage() {
+		return Arrays.asList(
+				new ResponseMessageBuilder()
+					.code(400)
+					.message("Requisição inválida (erro do cliente)")
+					.build(),
+					
+					new ResponseMessageBuilder()
+					.code(500)
+					.message("Erro interno do servidor")
+					.build(),
+					
+					new ResponseMessageBuilder()
+					.code(406)
+					.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+					.build(),
+					
+				new ResponseMessageBuilder()
+					.code(415)
+					.message("Requisição recusada porque o corpo está em um formato não suportado")
+					.build()
+				);
+	}
+
+	private List<ResponseMessage> globalDeleteResponseMessage() {
+		return Arrays.asList(
+				new ResponseMessageBuilder()
+					.code(400)
+					.message("Requisição inválida (erro do cliente)")
+					.build(),
+					
+				new ResponseMessageBuilder()
+					.code(500)
+					.message("Erro interno do servidor")
+					.build()
+				);
+	}
+
+	private List<ResponseMessage> globalPostResponseMessage() {
+		return Arrays.asList(
+				new ResponseMessageBuilder()
+					.code(400)
+					.message("Requisição inválida (erro do cliente)")
+					.build(),
+					
+				new ResponseMessageBuilder()
+					.code(500)
+					.message("Erro interno do servidor")
+					.build(),
+					
+				new ResponseMessageBuilder()
+					.code(406)
+					.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+					.build(),
+					
+				new ResponseMessageBuilder()
+					.code(415)
+					.message("Requisição recusada porque o corpo está em um formato não suportado")
+					.build()
+				);
+	}
+
 	private List<ResponseMessage> globalGetResponseMessage() {
 		return Arrays.asList(
 				new ResponseMessageBuilder()
