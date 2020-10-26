@@ -11,6 +11,6 @@ import lombok.Setter;
 public class EstadoIdInput {
 
 	@NotNull
-	@ApiModelProperty(example = "1")
+	@ApiModelProperty(example = "1", required = true)
 	private Long id;
 }
