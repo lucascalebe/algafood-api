@@ -15,13 +15,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
@@ -56,21 +57,24 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessage())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessage())
 				.globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessage())
-				.globalOperationParameters(Arrays.asList(
-						new ParameterBuilder().name("campos")
-						.description("Nomes das popriedades para filtrar na resposta, separados por vírgula")
-						.parameterType("query")
-						.modelRef(new ModelRef("string"))
-						.build()))
+//				.globalOperationParameters(Arrays.asList(
+//						new ParameterBuilder().name("campos")
+//						.description("Nomes das popriedades para filtrar na resposta, separados por vírgula")
+//						.parameterType("query")
+//						.modelRef(new ModelRef("string"))
+//						.build()))
 				.additionalModels(typeResolver.resolve(Problem.class))
 				.ignoredParameterTypes(ServletWebRequest.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(Page.class, CozinhaModel.class), CozinhasModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(Page.class, PedidoResumoModel.class), PedidosResumoModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos"),
 						new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"),
+						new Tag("Pedidos", "Gerencia os pedidos"),
 						new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
