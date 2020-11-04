@@ -33,7 +33,7 @@ public interface PedidoControllerOpenApi {
 	})
 	@ApiResponse(code = 404,message = "Pedido não encontrado", response = Problem.class)
 	public PedidoModel buscar(@ApiParam(value = "Código de um pedido",
-			example = "f9981ca4-5a5e-4da3-af04-933861df3e55")String codigoPedido);
+			example = "f9981ca4-5a5e-4da3-af04-933861df3e55",required = true)String codigoPedido);
 	
 	@ApiOperation("Cadastra um pedido")
 	@ApiResponse(code = 201, message = "Pedido Registrado")
