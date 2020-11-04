@@ -24,7 +24,7 @@ public interface PedidoControllerOpenApi {
 		@ApiImplicitParam(value = "Nomes das popriedades para filtrar na resposta, separados por vírgula",
 				name = "campos", paramType = "query", type = "string")
 	})
-	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
+	Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
 	
 	@ApiOperation("Busca um pedido por Id")
 	@ApiImplicitParams({
@@ -32,10 +32,10 @@ public interface PedidoControllerOpenApi {
 				name = "campos", paramType = "query", type = "string")
 	})
 	@ApiResponse(code = 404,message = "Pedido não encontrado", response = Problem.class)
-	public PedidoModel buscar(@ApiParam(value = "Código de um pedido",
+	PedidoModel buscar(@ApiParam(value = "Código de um pedido",
 			example = "f9981ca4-5a5e-4da3-af04-933861df3e55",required = true)String codigoPedido);
 	
 	@ApiOperation("Cadastra um pedido")
 	@ApiResponse(code = 201, message = "Pedido Registrado")
-	public PedidoModel adicionar(PedidoInput pedidoInput);
+	PedidoModel adicionar(PedidoInput pedidoInput);
 }
