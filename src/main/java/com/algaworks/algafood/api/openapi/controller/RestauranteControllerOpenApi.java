@@ -61,11 +61,15 @@ public interface RestauranteControllerOpenApi {
 	void inativar(@ApiParam(value = "Id de um restaurante",example = "1",required = true)Long restauranteId);
 	
 	@ApiOperation("Ativar restaurantes por Ids")
-	@ApiResponse(code = 204,message = "Restaurante ativado")
+	@ApiResponses({		
+		@ApiResponse(code = 204,message = "Restaurante ativado")
+	})
 	void ativarMultiplos(@ApiParam(value = "Ids dos restaurantes",required = true)List<Long> restauranteIds);
 	
 	@ApiOperation("Desativar restaurantes por Ids")
-	@ApiResponse(code = 204,message = "Restaurante desativado")
+	@ApiResponses({		
+		@ApiResponse(code = 204,message = "Restaurante desativado")
+	})
 	void desativarMultiplos(@ApiParam(value = "Ids dos restaurantes",required = true)List<Long> restauranteIds);
 	
 	
