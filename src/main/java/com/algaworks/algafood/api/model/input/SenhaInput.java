@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.model.input;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,11 @@ import lombok.Setter;
 @Setter
 public class SenhaInput {
 
+	@ApiModelProperty(example = "1234",required = true)
 	@NotBlank
 	private String senhaAtual;
 	
+	@ApiModelProperty(example = "4321",required = true)
 	@NotBlank
 	private String novaSenha;
 }
