@@ -49,7 +49,9 @@ public class EstadoController implements EstadoControllerOpenApi {
 
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
-		return estadoModelAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
+		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+		EstadoModel estadoModel =  estadoModelAssembler.toModel(estado);
+		return estadoModel;
 	}
 
 	@PostMapping
