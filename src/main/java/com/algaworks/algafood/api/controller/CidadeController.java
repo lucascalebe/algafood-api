@@ -31,7 +31,7 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/cidades",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
@@ -42,10 +42,10 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
 	private CidadeModelAssembler cidadeModelAssembler;
-	
+
 	@Autowired
 	private CidadeInputDisassembler cidadeInputDisassembler;
-	
+
 	@GetMapping
 	public List<CidadeModel> listar() {
 		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
@@ -53,67 +53,60 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		
+
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
-		
-		CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cidade);
-		
-		// Cria Link dinamico desse "localhost:8080/cidades/1"
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
-				.slash(cidadeModel.getId())
-				.withSelfRel());
-		
-		// Link dinamico "localhost:8080/cidades"
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
-				.withRel("cidades"));
-		
-		// Link dinamico "localhost:8080/estados/1"
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(EstadoController.class)
-				.slash(cidadeModel.getEstado().getId())
-				.withSelfRel());
+
+		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+
+		// link dinamico por meio do método
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
+				.buscar(cidadeModel.getId())).withSelfRel());
+			
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
+				.listar()).withRel("cidades"));
+	
+		cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class)
+				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
 		
 		return cidadeModel;
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
 			Cidade cidade = cidadeInputDisassembler.ToDomain(cidadeInput);
-			
+
 			cidade = cadastroCidade.salvar(cidade);
-					
-			CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cidade); 
-			
+
+			CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+
 			// adiciona URI no header
 			ResourceUriHelper.addUriInResponseHeader(cidadeModel.getId());
-			
+
 			return cidadeModel;
-		}
-		catch (EstadoNaoEncontradoException e) {
-			throw new NegocioException(e.getMessage(),e);
+		} catch (EstadoNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
+
 	@PutMapping("/{cidadeId}")
-	public CidadeModel atualizar(@PathVariable Long cidadeId, 
-			@RequestBody @Valid CidadeInput cidadeInput) {
-		
-		try {			
+	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
+
+		try {
 			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 
 			cidadeInputDisassembler.toDomainObject(cidadeInput, cidadeAtual);
-		
+
 			return cidadeModelAssembler.toModel(cadastroCidade.salvar(cidadeAtual));
-		}
-		catch (EstadoNaoEncontradoException e) {
-			throw new NegocioException(e.getMessage(),e);
+		} catch (EstadoNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
+
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {
 		cadastroCidade.excluir(cidadeId);
-	} 
+	}
 }
