@@ -5,8 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,10 +58,19 @@ public class CidadeController implements CidadeControllerOpenApi {
 		
 		CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cidade);
 		
-		cidadeModel.add(new Link("localhost:8080/cidades/1"));
-		cidadeModel.add(new Link("localhost:8080/cidades","cidades"));
+		// Cria Link dinamico desse "localhost:8080/cidades/1"
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
+				.slash(cidadeModel.getId())
+				.withSelfRel());
 		
-		cidadeModel.getEstado().add(new Link("localhost:8080/estados/1"));
+		// Link dinamico "localhost:8080/cidades"
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
+				.withRel("cidades"));
+		
+		// Link dinamico "localhost:8080/estados/1"
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(EstadoController.class)
+				.slash(cidadeModel.getEstado().getId())
+				.withSelfRel());
 		
 		return cidadeModel;
 	}
