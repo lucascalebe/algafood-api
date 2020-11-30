@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,45 +50,13 @@ public class CidadeController implements CidadeControllerOpenApi {
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
 		
-		List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionModel(todasCidades);
-		
-		cidadesModel.forEach(cidadeModel -> {
-			cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
-					.buscar(cidadeModel.getId())).withSelfRel());
-				
-			cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
-					.listar()).withRel("cidades"));
-		
-			cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class)
-					.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-		});
-		
-		@SuppressWarnings("deprecation")
-		CollectionModel<CidadeModel> cidadesCollectionModel = new CollectionModel<CidadeModel>(cidadesModel);
-		
-		cidadesCollectionModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
-		
-		return cidadesCollectionModel;
+		return cidadeModelAssembler.toCollectionModel(todasCidades);		
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
-
-		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-
-		// link dinamico por meio do método
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
-				.buscar(cidadeModel.getId())).withSelfRel());
-			
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
-	
-		cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-		
-		return cidadeModel;
+		return cidadeModelAssembler.toModel(cidade);
 	}
 
 	@PostMapping
