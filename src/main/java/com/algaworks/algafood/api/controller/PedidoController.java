@@ -95,7 +95,6 @@ public class PedidoController implements PedidoControllerOpenApi {
 		}
 	}
 	
-	
 	private Pageable traduzirPageable(Pageable apiPageable) {
 		var mapeamento = ImmutableMap.of(
 				"codigo","codigo",
