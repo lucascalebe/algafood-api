@@ -2,6 +2,11 @@ package com.algaworks.algafood.api.assembler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariable.VariableType;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -32,6 +37,16 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 	
 		modelMapper.map(pedido, pedidoModel);
 		
+		TemplateVariables pageVariables = new TemplateVariables(
+				new TemplateVariable("page", VariableType.REQUEST_PARAM),
+				new TemplateVariable("size", VariableType.REQUEST_PARAM),				
+				new TemplateVariable("sort", VariableType.REQUEST_PARAM)				
+				);
+		
+		String pedidosUrl = WebMvcLinkBuilder.linkTo(PedidoController.class).toUri().toString();
+		
+		pedidoModel.add(new Link(UriTemplate.of(pedidosUrl, pageVariables),"pedidos"));
+		
 		pedidoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
 		
 		pedidoModel.getRestaurante().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
@@ -46,7 +61,7 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		pedidoModel.getEnderecoEntrega().getCidade().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
 				CidadeController.class).buscar(pedidoModel.getEnderecoEntrega().getCidade().getId())).withSelfRel());
 		
-		 pedidoModel.getItens().forEach(item -> {
+		pedidoModel.getItens().forEach(item -> {
 	            item.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
 	                    .buscar(pedidoModel.getRestaurante().getId(), item.getProdutoId()))
 	                    .withRel("produto"));
