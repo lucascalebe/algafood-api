@@ -125,4 +125,36 @@ public class Restaurante {
 	public boolean naoContemProduto(Produto produto) {
 		return !contemProduto(produto);
 	}
+	
+	public boolean isAberto() {
+		return this.aberto;
+	}
+	
+	public boolean isFechado() {
+		return !this.isAberto();
+	}
+	
+	public boolean isAtivo() {
+		return this.ativo;
+	}
+	
+	public boolean isInativo() {
+		return !this.isAtivo();
+	}
+	
+	public boolean aberturaPermitida() {
+		return isAtivo() && isFechado();
+	}
+	
+	public boolean ativacaoPermitida() {
+		return isInativo();
+	}
+	
+	public boolean inativacaoPermitida() {
+		return isAtivo();
+	}
+	
+	public boolean fechamentoPermitido() { 
+		return isAberto();
+	}
 }

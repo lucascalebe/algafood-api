@@ -75,6 +75,26 @@ public class AlgaLinks {
 		return linkToRestaurante(restauranteId, IanaLinkRelations.SELF.value());
 	}
 	
+	public Link linkToRestauranteAbertura(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class)
+				.abertura(restauranteId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteFechamento(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class)
+				.fechamento(restauranteId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteInativacao(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class)
+				.inativar(restauranteId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteAtivacao(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class)
+				.ativar(restauranteId)).withRel(rel);
+	}
+	
 	public Link linkToResponsaveisRestaurante(Long restauranteId,String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class)
 				.listar(restauranteId)).withRel(rel);
