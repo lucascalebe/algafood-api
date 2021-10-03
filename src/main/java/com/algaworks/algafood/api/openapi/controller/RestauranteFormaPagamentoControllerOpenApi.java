@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
@@ -27,7 +28,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		@ApiResponse(code = 204,message = "Forma de pagamento desassociada do restaurante"),
 		@ApiResponse(code = 404,message = "Restaurante ou Forma de pagamento não encontrada", response = Problem.class)
 	})
-	void desassociar(@ApiParam(value = "Id do restaurante",example = "1", required = true)Long restauranteId,
+	ResponseEntity<Void> desassociar(@ApiParam(value = "Id do restaurante",example = "1", required = true)Long restauranteId,
 			@ApiParam(value = "Id da forma de pagamento",example = "1", required = true)Long formaPagamentoId);
 	
 	@ApiOperation("Associação de restaurante com forma de pagamento")
@@ -36,6 +37,6 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		@ApiResponse(code = 204,message = "Forma de Pagamento associada com o restaurante"),
 		@ApiResponse(code = 404,message = "Restaurante ou Forma de pagamento não encontrada", response = Problem.class)
 	})
-	void associar(@ApiParam(value = "Id do restaurante",example = "1", required = true)Long restauranteId,
+	ResponseEntity<Void> associar(@ApiParam(value = "Id do restaurante",example = "1", required = true)Long restauranteId,
 			@ApiParam(value = "Id da forma de pagamento",example = "1", required = true)Long formaPagamentoId);
 }
