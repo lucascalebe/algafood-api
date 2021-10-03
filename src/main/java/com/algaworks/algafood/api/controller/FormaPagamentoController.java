@@ -1,12 +1,12 @@
 package com.algaworks.algafood.api.controller;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +49,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	private FormaPagamentoInputDissasembler formaPagamentoInputDissasembler; 
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+	public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
 		//desabilita shalow eTag que eu coloquei no projeto todo na classe core.web.WebConfig para usar deep eTag
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		
@@ -66,7 +66,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 			return null;
 		}
 		
-		List<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler.
+		CollectionModel<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler.
 				toCollectionModel(formaPagamentoRepository.findAll());
 		
 		return ResponseEntity.ok()
