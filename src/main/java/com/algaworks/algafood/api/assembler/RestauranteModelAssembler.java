@@ -47,11 +47,17 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 			restauranteModel.add(algaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
 		}
 		
+		if (restauranteModel.getEndereco() != null 
+	            && restauranteModel.getEndereco().getCidade() != null) {
+	        restauranteModel.getEndereco().getCidade().add(
+	                algaLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+	    }
+		
 		restauranteModel.getCozinha().add(
 				algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
 		
-		restauranteModel.getEndereco().getCidade().add(
-				algaLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+	    restauranteModel.add(algaLinks.linkToProdutos(restaurante.getId(), "produtos"));
+		
 		
 		restauranteModel.add(algaLinks.linkToRestauranteFormasPagamento(restaurante.getId(),
 				"formas-pagamento"));
