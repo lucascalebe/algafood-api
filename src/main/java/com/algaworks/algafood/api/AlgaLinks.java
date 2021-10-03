@@ -30,7 +30,12 @@ public class AlgaLinks {
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),				
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 	
-	public Link linkToPedidos() {
+	public static final TemplateVariables PROJECAO_VARIABLES = new TemplateVariables(
+			new TemplateVariable("projecao", VariableType.REQUEST_PARAM));
+	
+	
+	@SuppressWarnings("deprecation")
+	public Link linkToPedidos(String rel) {
 		TemplateVariables filtroVariables = new TemplateVariables(
 				new TemplateVariable("clientId", VariableType.REQUEST_PARAM),
 				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),				
@@ -40,7 +45,7 @@ public class AlgaLinks {
 		
 		String pedidosUrl = WebMvcLinkBuilder.linkTo(PedidoController.class).toUri().toString();
 		
-		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)),"pedidos");
+		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)),rel);
 	}
 	
 	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
@@ -181,8 +186,11 @@ public class AlgaLinks {
                 .withRel(rel);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public Link linkToRestaurantes(String rel) {
-	    return WebMvcLinkBuilder.linkTo(RestauranteController.class).withRel(rel);
+		String restauranteUrl = WebMvcLinkBuilder.linkTo(RestauranteController.class).toUri().toString();
+		
+	    return new Link(UriTemplate.of(restauranteUrl,PROJECAO_VARIABLES), rel);
 	}
 
 	public Link linkToRestaurantes() {
