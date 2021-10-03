@@ -220,6 +220,11 @@ public class AlgaLinks {
 				.desassociar(restauranteId, formaPagamentoId)).withRel(rel);
 	}
 	
+	public Link linkToRestauranteFormaPagamentoAssociacao(Long restauranteId, String rel) { 
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class)
+				.associar(restauranteId,null)).withRel(rel);
+	}
+	
 	public Link linkToCozinha(Long cozinhaId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CozinhaController.class)
 				.buscar(cozinhaId)).withRel(rel);
