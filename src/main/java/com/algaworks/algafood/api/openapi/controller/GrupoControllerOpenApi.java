@@ -11,12 +11,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Grupos")
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os gupos")
-	List<GrupoModel> listar();
+	CollectionModel<GrupoModel> listar();
 	
 	@ApiOperation("Busca um grupo por ID")
 	@ApiResponses({

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Usuários")
 public interface UsuarioGrupoControllerOpenApi {
@@ -19,7 +20,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 404,message = "Usuário não encontrado",response = Problem.class),
 		@ApiResponse(code = 400,message = "Usuário não encontrado",response = Problem.class)
 	})
-	List<GrupoModel> listar(@ApiParam(value = "Id do usuário",example = "1",required = true)Long usuarioId);
+	CollectionModel<GrupoModel> listar(@ApiParam(value = "Id do usuário",example = "1",required = true)Long usuarioId);
 	
 	@ApiOperation("Desassociação de grupo com usuário")
 	@ApiResponses({
