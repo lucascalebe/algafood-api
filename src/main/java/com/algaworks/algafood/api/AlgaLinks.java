@@ -169,6 +169,16 @@ public class AlgaLinks {
 		return linkToGrupoUsuario(usuarioId, IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToUsuarioGrupoAssociacao(Long usuarioId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class)
+				.adicionarGrupo(usuarioId, null)).withRel(rel);
+	}
+
+	public Link linkToUsuarioGrupoDesassociacao(Long usuarioId, Long grupoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class)
+				.removerGrupo(usuarioId, grupoId)).withRel(rel);
+	}
+
 	public Link linkToFormaPagamento(Long formaPagamentoId, String rel) {
 		return WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(FormaPagamentoController.class).buscar(formaPagamentoId, null))
