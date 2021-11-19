@@ -141,6 +141,30 @@ public class AlgaLinks {
 				.listar(grupoId)).withRel(rel);
 	}
 
+	public Link linkToGrupoPermissoes(Long grupoId) {
+		return linkToGrupoPermissoes(grupoId, IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToPermissoes(String rel) {
+		return WebMvcLinkBuilder.linkTo(PermissaoController.class).withRel(rel);
+	}
+
+	public Link linkToPermissoes() {
+		return linkToPermissoes(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupoPermissaoAssociacao(Long grupoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GrupoPermissaoController.class)
+				.adicionarPermissao(grupoId, null)).withRel(rel);
+	}
+
+	public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GrupoPermissaoController.class)
+				.removerPermissao(grupoId,permissaoId)).withRel(rel);
+	}
+
+
+
 	public Link linkToGrupoUsuario(Long usuarioId) {
 		return linkToGrupoUsuario(usuarioId, IanaLinkRelations.SELF.value());
 	}
