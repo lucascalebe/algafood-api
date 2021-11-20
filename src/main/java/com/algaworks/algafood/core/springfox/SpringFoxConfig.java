@@ -50,7 +50,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
 	
 	//springFox escaneia todos controllers e gera JSON
-//	@Bean
+	@Bean
 	public Docket apiDocketV1() {
 		var typeResolver = new TypeResolver();
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -211,7 +211,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	// informações na pagina HTML do swagger UI
 	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
-				.title("Algafood API (DEPRECIADA)")
+				.title("Algafood API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
 				.contact(new Contact("Lucas Calebe","https://www.linkedin.com/in/lucas-calebe-73263290/",

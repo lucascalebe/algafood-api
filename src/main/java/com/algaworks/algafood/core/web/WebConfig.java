@@ -25,10 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
 		.allowedMethods("*");
 	}
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(apiRetirementHandler);
-	}
+	//método usado para depreciar v1 da api.
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(apiRetirementHandler);
+//	}
 
 	//gerar Etag
 	@Bean
