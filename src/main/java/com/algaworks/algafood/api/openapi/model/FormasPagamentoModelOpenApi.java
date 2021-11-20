@@ -18,6 +18,6 @@ public class FormasPagamentoModelOpenApi {
     @Data
     private static class FormaPagamentoEmbeddedModelOpenApi {
 
-        private List<FormaPagamentoModel> FormasPagamento;
+        private List<FormaPagamentoModel> formasPagamento;
     }
 }
