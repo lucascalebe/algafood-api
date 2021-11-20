@@ -11,12 +11,12 @@ import java.util.List;
 @Data
 public class FormasPagamentoModelOpenApi {
 
-    private FormasPagamentoModelOpenApi.FormaPagamentoEmbeddedModelOpenApi _embedded;
+    private FormasPagamentoEmbeddedModelOpenApi _embedded;
     private Links _links;
 
     @ApiModel("FormasPagamentoEmbeddedModel")
     @Data
-    private static class FormaPagamentoEmbeddedModelOpenApi {
+    private static class FormasPagamentoEmbeddedModelOpenApi {
 
         private List<FormaPagamentoModel> formasPagamento;
     }

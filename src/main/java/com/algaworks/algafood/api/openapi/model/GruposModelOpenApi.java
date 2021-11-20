@@ -11,12 +11,12 @@ import java.util.List;
 @Data
 public class GruposModelOpenApi {
 
-    private GruposModelOpenApi.GrupoEmbeddedModelOpenApi _embedded;
+    private GruposEmbeddedModelOpenApi _embedded;
     private Links _links;
 
     @ApiModel("GruposEmbeddedModel")
     @Data
-    private static class GrupoEmbeddedModelOpenApi {
+    private static class GruposEmbeddedModelOpenApi {
 
         private List<GrupoModel> grupos;
     }
