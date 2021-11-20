@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 		.allowedMethods("*");
 	}
 
+	// definindo content type padrão caso o consumidor não informe.
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		configurer.defaultContentType(AlgaMediaTypes.V2_APPLICATION_JSON);
