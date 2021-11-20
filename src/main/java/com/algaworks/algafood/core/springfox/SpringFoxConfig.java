@@ -50,7 +50,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
 	
 	//springFox escaneia todos controllers e gera JSON
-	@Bean
+//	@Bean
 	public Docket apiDocketV1() {
 		var typeResolver = new TypeResolver();
 		return new Docket(DocumentationType.SWAGGER_2)

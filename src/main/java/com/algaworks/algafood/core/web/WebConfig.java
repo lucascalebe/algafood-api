@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 
 	@Autowired
-	private ApiDeprecationHandler apiDeprecationHandler;
+	private ApiRetirementHandler apiRetirementHandler;
 	
 	//cors no projeto inteiro
 	
@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(apiDeprecationHandler);
+		registry.addInterceptor(apiRetirementHandler);
 	}
 
 	//gerar Etag
