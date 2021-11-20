@@ -47,25 +47,19 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	
 	//springFox escaneia todos controllers e gera JSON
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 		var typeResolver = new TypeResolver();
-		
 		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V1")
 				.select()  
 					.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-					.paths(PathSelectors.any())
+					.paths(PathSelectors.ant("/v1/**"))
 					.build()
 				.useDefaultResponseMessages(false)	
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessage())
 				.globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessage())
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessage())
 				.globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessage())
-//				.globalOperationParameters(Arrays.asList(
-//						new ParameterBuilder().name("campos")
-//						.description("Nomes das popriedades para filtrar na resposta, separados por vírgula")
-//						.parameterType("query")
-//						.modelRef(new ModelRef("string"))
-//						.build()))
 				.additionalModels(typeResolver.resolve(Problem.class))
 				.ignoredParameterTypes(
 						ServletWebRequest.class,
@@ -99,7 +93,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
 						UsuariosModelOpenApi.class))
-				.apiInfo(apiInfo())
+				.apiInfo(apiInfoV1())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos"),
 						new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"),
@@ -112,6 +106,36 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						new Tag("Cozinhas", "Gerencia as cozinhas"),
 						new Tag("Permissões", "Gerencia as permissões"));
 	}
+
+
+	@Bean
+	public Docket apiDocketV2() {
+		var typeResolver = new TypeResolver();
+
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V2")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.ant("/v2/**"))
+				.build()
+				.useDefaultResponseMessages(false)
+				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessage())
+				.globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessage())
+				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessage())
+				.globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessage())
+				.additionalModels(typeResolver.resolve(Problem.class))
+				.ignoredParameterTypes(
+						ServletWebRequest.class,
+						URL.class,
+						URI.class,
+						URLStreamHandler.class,
+						Resource.class,
+						File.class,
+						InputStream.class)
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.apiInfo(apiInfoV2());
+			}
 	
 	private List<ResponseMessage> globalPostPutResponseMessage() {
 		return Arrays.asList(
@@ -172,7 +196,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	}
 	
 	// informações na pagina HTML do swagger UI
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("Algafood API")
 				.description("API aberta para clientes e restaurantes")
@@ -181,7 +205,17 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						"lucascalebe07@hotmail.com"))
 				.build();
 	}
-	
+
+	private ApiInfo apiInfoV2() {
+		return new ApiInfoBuilder()
+				.title("Algafood API")
+				.description("API aberta para clientes e restaurantes")
+				.version("2")
+				.contact(new Contact("Lucas Calebe","https://www.linkedin.com/in/lucas-calebe-73263290/",
+						"lucascalebe07@hotmail.com"))
+				.build();
+	}
+
 	//swagger ui gerar documentação HTML
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
