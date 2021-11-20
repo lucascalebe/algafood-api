@@ -8,8 +8,7 @@ import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 
-import com.algaworks.algafood.api.model.CidadeModel;
-import com.algaworks.algafood.api.model.EstadoModel;
+import com.algaworks.algafood.api.model.*;
 import com.algaworks.algafood.api.openapi.model.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +25,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.model.CozinhaModel;
-import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -91,6 +88,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						typeResolver.resolve(CollectionModel.class, CidadeModel.class), CidadesModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, EstadoModel.class), EstadosModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class), FormasPagamentoModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos"),
