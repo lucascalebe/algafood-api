@@ -211,13 +211,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	// informações na pagina HTML do swagger UI
 	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
-				.title("Algafood API")
+				.title("Algafood API (DEPRECIADA)")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
 				.contact(new Contact("Lucas Calebe","https://www.linkedin.com/in/lucas-calebe-73263290/",
 						"lucascalebe07@hotmail.com"))
 				.build();
 	}
+
 
 	private ApiInfo apiInfoV2() {
 		return new ApiInfoBuilder()
