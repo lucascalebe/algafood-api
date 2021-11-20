@@ -1,20 +1,13 @@
 package com.algaworks.algafood.core.springfox;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLStreamHandler;
-import java.util.Arrays;
-import java.util.List;
-
-import com.algaworks.algafood.api.model.*;
-import com.algaworks.algafood.api.openapi.model.*;
+import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.v1.model.*;
+import com.algaworks.algafood.api.v1.openapi.model.*;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
@@ -23,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.fasterxml.classmate.TypeResolver;
-
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -41,6 +30,14 @@ import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
