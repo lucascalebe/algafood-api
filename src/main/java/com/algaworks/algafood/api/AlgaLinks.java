@@ -301,4 +301,20 @@ public class AlgaLinks {
 		return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToEstatisticas(String rel) {
+		return WebMvcLinkBuilder.linkTo(EstatisticasController.class).withRel(rel);
+	}
+
+	public Link linkToEstatisticasVendasDiarias(String rel) {
+		TemplateVariables filtroVariables = new TemplateVariables(
+				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+				new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+
+		String pedidosUrl = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstatisticasController.class)
+				.consultarVendasDiarias(null, null)).toUri().toString();
+
+		return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+	}
 }

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.openapi.controller;
 
 import java.util.List;
 
+import com.algaworks.algafood.api.controller.EstatisticasController;
 import org.springframework.http.ResponseEntity;
 
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
@@ -15,6 +16,9 @@ import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
+
+	@ApiOperation(value = "Estatísticas", hidden = true)
+	EstatisticasController.EstatisticasModel estatisticas();
 
 	@ApiOperation("Consulta estatísticas de vendas diárias")
 	@ApiImplicitParams({
