@@ -1,5 +1,7 @@
 package com.algaworks.algafood.core.modelmapper;
 
+import com.algaworks.algafood.api.v2.model.input.CidadeInputV2;
+import com.algaworks.algafood.domain.model.Cidade;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +18,14 @@ public class ModelMapperConfig {
 	public ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
 
+
 		//diz pro modelMapper ignorar o ItemPedido::setId
 		modelMapper.createTypeMap(ItemPedidoInput.class,ItemPedido.class)
 			.addMappings(mapper -> mapper.skip(ItemPedido::setId));
-		
+
+		modelMapper.createTypeMap(CidadeInputV2.class, Cidade.class)
+				.addMappings(mapper -> mapper.skip(Cidade::setId));
+
 		var enderecoToEnderecoModelTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoModel.class);
 	
 		enderecoToEnderecoModelTypeMap.<String>addMapping(
