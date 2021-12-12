@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.v1.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,7 +59,10 @@ public class PedidoController implements PedidoControllerOpenApi {
 	
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
-	
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
 	@Override
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
@@ -83,10 +87,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 	public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
 		try {
 			Pedido pedido = pedidoInputDisassembler.toDomain(pedidoInput);
-			
-			//TODO
+
 			pedido.setCliente(new Usuario());
-			pedido.getCliente().setId(1L);
+			pedido.getCliente().setId(algaSecurity.getUsuarioId());
 			
 			return pedidoModelAssembler.toModel(emissaoPedido.emitir(pedido));
 		}
