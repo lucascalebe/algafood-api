@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -50,7 +51,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 	@Autowired
 	private FotoStorageService fotoStorage;
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 			@Valid FotoProdutoInput fotoProdutoInput,
@@ -71,6 +73,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 	}
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping()
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId
 			, @PathVariable Long produtoId) {
@@ -78,7 +81,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		FotoProduto foto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 		return fotoProdutoModelAssembler.toModel(foto);
 	}
-	
+
+
 	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId
 			, @PathVariable Long produtoId,@RequestHeader(name ="accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -109,7 +113,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

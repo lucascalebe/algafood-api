@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
 			@RequestParam(required = false) Boolean incluirInativos) {
@@ -69,14 +71,16 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return produtoModelAssembler.toCollectionModel(todosProdutos)
 				.add(algaLinks.linkToProdutos(restauranteId)); 
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		Produto produto = cadastroProduto.buscarOuFalhar(produtoId, restaurante.getId());
 		return produtoModelAssembler.toModel(produto);
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
@@ -89,7 +93,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		
 		return produtoModelAssembler.toModel(cadastroProduto.salvar(produto));
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId 
 			,@RequestBody @Valid ProdutoInput produtoInput) {

@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.controller;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -49,7 +51,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		
 		return usuariosModel;
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping("/{responsavelId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> removerResponsavel(@PathVariable Long restauranteId, @PathVariable Long responsavelId) {
@@ -57,7 +60,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		
 		return ResponseEntity.noContent().build();
 	}
-	
+
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{responsavelId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> adicionarResponsavel(@PathVariable Long restauranteId, @PathVariable Long responsavelId) {
