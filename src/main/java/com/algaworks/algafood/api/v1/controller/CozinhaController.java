@@ -48,7 +48,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
 		log.info("Consultando cozinhas...");
-//		System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 	
