@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.v1.controller;
 import javax.validation.Valid;
 
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,7 +77,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 	    
 	    return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 	}
-	
+
+	@CheckSecurity.Pedidos.PodeBuscar
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		return pedidoModelAssembler.toModel(emissaoPedido.buscarOuFalhar(codigoPedido));
