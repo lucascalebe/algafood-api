@@ -24,6 +24,10 @@ public class AlgaSecurity {
     }
 
     public boolean gerenciaRestaurante(Long restauranteId) {
-        return restauranteRepository.existsResponsavel(restauranteId,getUsuarioId());
+        if (restauranteId == null) {
+            return false;
+        }
+
+        return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
     }
 }
