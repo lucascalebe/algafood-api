@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.v1.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -41,12 +42,14 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	
 	@Autowired
 	private UsuarioInputDisassembler usuarioInputDisassembler;
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar() {
 		return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		return usuarioModelAssembler.toModel(cadastroUsuario.buscarOuFalhar(usuarioId));
@@ -58,7 +61,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		Usuario usuario = usuarioInputDisassembler.toDomain(usuarioInput);
 		return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{usuarioId}")
 	public UsuarioModel atualizar(@PathVariable Long usuarioId,
 			@RequestBody @Valid UsuarioInput usuarioInput) {
@@ -69,7 +73,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		
 		return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senhaInput) {

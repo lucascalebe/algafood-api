@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.v1.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -40,24 +41,28 @@ public class GrupoController implements GrupoControllerOpenApi {
 	
 	@Autowired
 	private GrupoInputDisassebmler grupoInputDisassebmler;
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoModel> listar() {
 		return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{grupoId}")
 	public GrupoModel buscar(@PathVariable Long grupoId) {
 		return grupoModelAssembler.toModel(cadastroGrupo.buscarOuFalhar(grupoId));
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupo = grupoInputDisassebmler.toDomain(grupoInput);
 		return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping("/{grupoId}")
 	public GrupoModel atualizar(@PathVariable Long grupoId,
 			@RequestBody @Valid GrupoInput grupoInput) {
@@ -68,7 +73,8 @@ public class GrupoController implements GrupoControllerOpenApi {
 		
 		return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
 	}
-	
+
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long grupoId) {
