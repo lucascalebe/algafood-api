@@ -84,7 +84,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		return pedidoModelAssembler.toModel(emissaoPedido.buscarOuFalhar(codigoPedido));
 	}
-	
+
+	@CheckSecurity.Pedidos.PodeCriar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {

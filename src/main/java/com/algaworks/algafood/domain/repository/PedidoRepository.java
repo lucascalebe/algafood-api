@@ -12,11 +12,12 @@ import com.algaworks.algafood.domain.model.Pedido;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long>
-	, JpaSpecificationExecutor<Pedido>  {
-	
+	, JpaSpecificationExecutor<Pedido> {
+
 	Optional<Pedido> findByCodigo(String codigo);
-	
+
 	@Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha")
 	List<Pedido> findAll();
-	
+
+	boolean isPedidoGerenciadoPor(String codigoPedido, Long usuarioId);
 }
