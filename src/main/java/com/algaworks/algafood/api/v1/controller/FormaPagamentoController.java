@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.core.security.CheckSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
@@ -46,8 +47,9 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 	
 	@Autowired
-	private FormaPagamentoInputDissasembler formaPagamentoInputDissasembler; 
-	
+	private FormaPagamentoInputDissasembler formaPagamentoInputDissasembler;
+
+	@CheckSecurity.FormasPagamento.PodeConsultar
 	@GetMapping
 	public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
 		//desabilita shalow eTag que eu coloquei no projeto todo na classe core.web.WebConfig para usar deep eTag
@@ -74,7 +76,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 				.eTag(eTag)
 				.body(formasPagamentosModel);
 	}
-	
+
+	@CheckSecurity.FormasPagamento.PodeConsultar
 	@GetMapping("/{formaPagamentoId}")
 	public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -99,14 +102,16 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 				.eTag(eTag)
 				.body(formaPagamentoModel);
 	}
-	
+
+	@CheckSecurity.FormasPagamento.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
 		FormaPagamento formaPagamento = formaPagamentoInputDissasembler.toDomain(formaPagamentoInput);
 		return formaPagamentoModelAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamento));
 	}
-	
+
+	@CheckSecurity.FormasPagamento.PodeEditar
 	@PutMapping("/{formaPagamentoId}")
 	public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
 			@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -116,7 +121,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		
 		return formaPagamentoModelAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamento));
 	}
-	
+
+	@CheckSecurity.FormasPagamento.PodeEditar
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long formaPagamentoId) {
