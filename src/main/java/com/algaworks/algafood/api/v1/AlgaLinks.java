@@ -82,22 +82,22 @@ public class AlgaLinks {
 				.withRel(rel);
 	}
 
-	public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
+	public Link linkToRestauranteResponsaveis(Long restauranteId, String rel) {
 		return WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).listar(restauranteId))
 				.withRel(rel);
 	}
 
-	public Link linkToResponsaveisRestaurante(Long restauranteId) {
-		return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
+	public Link linkToRestauranteResponsaveis(Long restauranteId) {
+		return linkToRestauranteResponsaveis(restauranteId, IanaLinkRelations.SELF.value());
 	}
 
-	public Link linkToResponsavelRestauranteRemover(Long restauranteId, Long responsavelId, String rel) {
+	public Link linkToRestauranteResponsavelDesassociacao(Long restauranteId, Long responsavelId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class)
 				.removerResponsavel(restauranteId, responsavelId)).withRel(rel);
 	}
 	
-	public Link linkToResponsavelRestauranteAdicionar(Long restauranteId, String rel) {
+	public Link linkToRestauranteResponsavelAssociacao(Long restauranteId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class)
 				.adicionarResponsavel(restauranteId, null)).withRel(rel);
 	}
@@ -119,7 +119,7 @@ public class AlgaLinks {
 		return linkToUsuarios(IanaLinkRelations.SELF.value());
 	}
 
-	public Link linkToGrupoUsuario(Long usuarioId, String rel) {
+	public Link linkToGruposUsuario(Long usuarioId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioId))
 				.withRel(rel);
 	}
@@ -161,8 +161,8 @@ public class AlgaLinks {
 
 
 
-	public Link linkToGrupoUsuario(Long usuarioId) {
-		return linkToGrupoUsuario(usuarioId, IanaLinkRelations.SELF.value());
+	public Link linkToGruposUsuario(Long usuarioId) {
+		return linkToGruposUsuario(usuarioId, IanaLinkRelations.SELF.value());
 	}
 
 	public Link linkToUsuarioGrupoAssociacao(Long usuarioId, String rel) {
@@ -219,12 +219,12 @@ public class AlgaLinks {
 		return linkToEstado(estadoId, IanaLinkRelations.SELF.value());
 	}
 
-	public Link LinkToEstados(String rel) {
+	public Link linkToEstados(String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).listar()).withRel(rel);
 	}
 
-	public Link LinkToEstados() {
-		return LinkToEstados(IanaLinkRelations.SELF.value());
+	public Link linkToEstados() {
+		return linkToEstados(IanaLinkRelations.SELF.value());
 	}
 
 	public Link linkToItem(Long restauranteId, Long produtoId, String rel) {

@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -22,17 +23,19 @@ public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<C
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
 	@Override
 	public CozinhaModel toModel(Cozinha cozinha) {
 		CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
 		modelMapper.map(cozinha, cozinhaModel);
-	
-		cozinhaModel.add(algaLinks.linkToCozinhas("cozinhas"));
-		
+
+		if (algaSecurity.podeConsultarCozinhas()) {
+			cozinhaModel.add(algaLinks.linkToCozinhas("cozinhas"));
+		}
+
 		return cozinhaModel;
 	}
-	
-	
-	
 }

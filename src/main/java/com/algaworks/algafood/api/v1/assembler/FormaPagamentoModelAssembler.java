@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -23,20 +24,32 @@ public class FormaPagamentoModelAssembler extends RepresentationModelAssemblerSu
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
+	@Override
 	public FormaPagamentoModel toModel(FormaPagamento formaPagamento) {
-		FormaPagamentoModel formaPagamentoModel = createModelWithId(formaPagamento.getId(),formaPagamento);
-		
+		FormaPagamentoModel formaPagamentoModel =
+				createModelWithId(formaPagamento.getId(), formaPagamento);
+
 		modelMapper.map(formaPagamento, formaPagamentoModel);
-		
-		formaPagamentoModel.add(algaLinks.linkToFormasPagamento("formasPagamento"));
-		
-		return formaPagamentoModel;	
+
+		if (algaSecurity.podeConsultarFormasPagamento()) {
+			formaPagamentoModel.add(algaLinks.linkToFormasPagamento("formasPagamento"));
+		}
+
+		return formaPagamentoModel;
 	}
-	
+
 	@Override
 	public CollectionModel<FormaPagamentoModel> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
-		return super.toCollectionModel(entities)
-				.add(algaLinks.linkToFormasPagamento());
+		CollectionModel<FormaPagamentoModel> collectionModel = super.toCollectionModel(entities);
+
+		if (algaSecurity.podeConsultarFormasPagamento()) {
+			collectionModel.add(algaLinks.linkToFormasPagamento());
+		}
+
+		return collectionModel;
 	}
 }

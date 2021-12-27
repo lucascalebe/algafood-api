@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -19,17 +20,22 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
 	public UsuarioModelAssembler() {
 		super(UsuarioController.class, UsuarioModel.class);
 	}
 	
 	public UsuarioModel toModel(Usuario usuario) {
 		UsuarioModel usuarioModel = modelMapper.map(usuario, UsuarioModel.class);
-		
-		usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
-			
-		usuarioModel.add(algaLinks.linkToGrupoUsuario(usuario.getId(), "grupos-usuario"));
+
+		if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
+
+			usuarioModel.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+		}
 		
 		return usuarioModel;
 	}

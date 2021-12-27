@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -18,30 +19,39 @@ public class RestauranteApenasNomeModelAssembler extends RepresentationModelAsse
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@Autowired
+	private AlgaSecurity algaSecurity;
 
 	public RestauranteApenasNomeModelAssembler() {
 		super(RestauranteController.class, RestauranteApenasNomeModel.class);
 	}
-	
+
 	@Override
 	public RestauranteApenasNomeModel toModel(Restaurante restaurante) {
-		RestauranteApenasNomeModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
-		
+		RestauranteApenasNomeModel restauranteModel = createModelWithId(
+				restaurante.getId(), restaurante);
+
 		modelMapper.map(restaurante, restauranteModel);
-		
-		restauranteModel.add(algaLinks.linkToRestaurantes("restaurantes"));
-		
+
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			restauranteModel.add(algaLinks.linkToRestaurantes("restaurantes"));
+		}
+
 		return restauranteModel;
 	}
-	
+
 	@Override
 	public CollectionModel<RestauranteApenasNomeModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
-		return super.toCollectionModel(entities)
-				.add(algaLinks.linkToRestaurantes());
+		CollectionModel<RestauranteApenasNomeModel> collectionModel = super.toCollectionModel(entities);
+
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			collectionModel.add(algaLinks.linkToRestaurantes());
+		}
+
+		return collectionModel;
 	}
 
 }

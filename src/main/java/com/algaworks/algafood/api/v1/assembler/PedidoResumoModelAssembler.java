@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -19,23 +20,31 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	
+
 	@Autowired
-	private AlgaLinks algalinks;
-	
+	private AlgaLinks algaLinks;
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
 	@Override
 	public PedidoResumoModel toModel(Pedido pedido) {
-		PedidoResumoModel pedidoResumoModel = createModelWithId(pedido.getCodigo(),pedido);
-		
-		modelMapper.map(pedido, pedidoResumoModel);
+		PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+		modelMapper.map(pedido, pedidoModel);
 
-		pedidoResumoModel.add(algalinks.linkToPedidos("pedidos"));
-		
-		pedidoResumoModel.getRestaurante().add(algalinks.linkToRestaurante(pedido.getId()));
-		
-		pedidoResumoModel.getCliente().add(algalinks.linkToUsuario(pedido.getCliente().getId()));
-		
-		return pedidoResumoModel;
+		if (algaSecurity.podePesquisarPedidos()) {
+			pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
+		}
+
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			pedidoModel.getRestaurante().add(
+					algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+		}
+
+		if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
+		}
+
+		return pedidoModel;
 	}
 }

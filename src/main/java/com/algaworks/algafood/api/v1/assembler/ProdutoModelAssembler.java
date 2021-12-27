@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -22,15 +23,21 @@ public class ProdutoModelAssembler extends RepresentationModelAssemblerSupport<P
 	
 	@Autowired
 	private AlgaLinks algaLinks;
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
 	
 	public ProdutoModel toModel(Produto produto) {
 		ProdutoModel produtoModel = createModelWithId(produto.getId(),produto, produto.getRestaurante().getId());
 		
 		modelMapper.map(produto, produtoModel);
-		
-		produtoModel.add(algaLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
 
-		produtoModel.add(algaLinks.linkToFotoProduto(produto.getRestaurante().getId(),produto.getId(),"foto"));
+		if (algaSecurity.podeConsultarRestaurantes()) {
+			produtoModel.add(algaLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+			produtoModel.add(algaLinks.linkToFotoProduto(
+					produto.getRestaurante().getId(), produto.getId(), "foto"));
+		}
 		
 		return produtoModel;
 	}

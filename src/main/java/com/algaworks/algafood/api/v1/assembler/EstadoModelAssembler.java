@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -23,21 +24,31 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 
 	@Autowired
 	private AlgaLinks algaLinks;
-	
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
+	@Override
 	public EstadoModel toModel(Estado estado) {
-		EstadoModel estadoModel = modelMapper.map(estado, EstadoModel.class);
-	
-		estadoModel.add(algaLinks.LinkToEstados("estados"));
-		
-		estadoModel.add(algaLinks.linkToEstado(estadoModel.getId()));
-		
+		EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
+		modelMapper.map(estado, estadoModel);
+
+		if (algaSecurity.podeConsultarEstados()) {
+			estadoModel.add(algaLinks.linkToEstados("estados"));
+		}
+
 		return estadoModel;
 	}
-	
-	
-	 @Override
-	    public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
-	        return super.toCollectionModel(entities)
-	            .add(algaLinks.LinkToEstados());
-	    } 
+
+	@Override
+	public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
+		CollectionModel<EstadoModel> collectionModel = super.toCollectionModel(entities);
+
+		if (algaSecurity.podeConsultarEstados()) {
+			collectionModel.add(algaLinks.linkToEstados());
+		}
+
+		return collectionModel;
+	}
+
 }
