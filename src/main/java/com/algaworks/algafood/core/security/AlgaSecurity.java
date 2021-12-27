@@ -38,4 +38,8 @@ public class AlgaSecurity {
     public boolean gerenciaRestauranteDoPedido(String codigoPedido) {
         return pedidoRepository.isPedidoGerenciadoPor(codigoPedido, getUsuarioId());
     }
+
+    public boolean usuarioAutenticadoIgual(Long usuarioId) {
+        return getUsuarioId() != null && usuarioId != null && getUsuarioId().equals(usuarioId);
+    }
 }
