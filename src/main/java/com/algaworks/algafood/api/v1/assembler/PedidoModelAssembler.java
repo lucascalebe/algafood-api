@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.assembler;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -16,15 +17,17 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
 	@Autowired
 	private AlgaLinks algaLinks;
-	
-	
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Autowired
+	private AlgaSecurity algaSecurity;
+
 	public PedidoModelAssembler() {
 		super(PedidoController.class, PedidoModel.class);
 	}
 
-	@Autowired
-	private ModelMapper modelMapper;
-	
 	@Override
 	public PedidoModel toModel(Pedido pedido) {
 		PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
@@ -32,19 +35,21 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		modelMapper.map(pedido, pedidoModel);
 		
 		pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
-		
-		if (pedido.podeSerConfirmado()) {			
-			pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedidoModel.getCodigo(), "confirmar"));
+
+		if (algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
+			if (pedido.podeSerConfirmado()) {
+				pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedidoModel.getCodigo(), "confirmar"));
+			}
+
+			if (pedido.podeSerCancelado()) {
+				pedidoModel.add(algaLinks.linkToCancelamentoPedido(pedidoModel.getCodigo(), "cancelar"));
+			}
+
+			if (pedido.podeSerEntregue()) {
+				pedidoModel.add(algaLinks.linkToEntregaPedido(pedidoModel.getCodigo(), "entregar"));
+			}
 		}
-		
-		if (pedido.podeSerCancelado()) {			
-			pedidoModel.add(algaLinks.linkToCancelamentoPedido(pedidoModel.getCodigo(), "cancelar"));
-		}
-		
-		if (pedido.podeSerEntregue()) {			
-			pedidoModel.add(algaLinks.linkToEntregaPedido(pedidoModel.getCodigo(), "entregar"));
-		}
-		
+
 		
 		pedidoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
 		
