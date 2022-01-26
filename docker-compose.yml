@@ -21,8 +21,6 @@ services:
       DB_HOST: algafood-mysql
       S3-ID-KEY-ACCESS: AKIA3LK7MM6T3WEWPOEP
       S3-KEY-SECRET: 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
-    ports:
-      - "8080:8080"
     networks:
       - algafood-network
     depends_on:
