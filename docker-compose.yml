@@ -19,7 +19,6 @@ services:
     networks:
       - algafood-network
 
-
   algafood-api:
     image: algafood-api
     command: ["/wait-for-it.sh", "algafood-mysql:3306", "-t", "30", "--", "java", "-jar", "api.jar"]
@@ -27,6 +26,8 @@ services:
       DB_HOST: algafood-mysql
       S3-ID-KEY-ACCESS: AKIA3LK7MM6T3WEWPOEP
       S3-KEY-SECRET: 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
+      SPRING_SESSION_STORE_TYPE: redis
+      SPRING_REDIS_HOST: algafood-redis
     networks:
       - algafood-network
     depends_on:
